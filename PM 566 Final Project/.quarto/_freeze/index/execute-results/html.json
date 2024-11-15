@@ -1,9 +1,11 @@
 {
-  "hash": "dc1c8f63b2703d5804928b30b3cf5646",
+  "hash": "927d5f6a01c6e08582b7a01d0a02909a",
   "result": {
     "engine": "knitr",
-    "markdown": "---\ntitle: \"PM566 Final Project\"\nauthor: \"Erica Shin\"\noutput: \n    html_document:\n        toc: TRUE\n        toc_float: TRUE\n---\n\n\nThis is my PM566 Final Project website.\n\n---\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n",
-    "supporting": [],
+    "markdown": "---\ntitle: \"PM566 Final Project\"\nauthor: \"Erica Shin\"\noutput: \n    html_document:\n        toc: TRUE\n        toc_float: TRUE\n---\n\n\n## This is my PM566 Final Project website.\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
