@@ -1,5 +1,5 @@
 ---
-title: "PM566 Final Project"
+title: "PM 566 Final Project"
 author: "Erica Shin"
 output: 
     html_document:
@@ -7,7 +7,7 @@ output:
         toc_float: TRUE
 ---
 
-## This is my PM566 Lab 12 website.
+## This is my PM 566 Lab 12 website.
 
 ```{r setup, message=FALSE, echo=FALSE, warning=FALSE}
 library(data.table)
