@@ -54,21 +54,21 @@ To explore the question of interest, my dataset focuses on the following 13 vari
 
 -   **Sex**: Character variable indicating the patient's sex (e.g., "Female", "Male").
 
--   **Race (Recode: White, Black, Other)**: Character variable representing the patient's race.
+-   **Race (Recode: White, Black, Other)**: Character variable representing the patient's race. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
 
 -   **Race Ethnicity**: Character variable detailing the specific ethnicity of the patient.
 
--   **Age (Recode with Single Ages and 90+)**: Character variable indicating the patient's age.
+-   **Age (Recode with Single Ages and 90+)**: Character variable indicating the patient's age. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
 
--   **Age (Recode with \<1 Year Olds)**: Character variable representing age ranges.
+-   **Age (Recode with \<1 Year Olds)**: Character variable representing age ranges. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
 
 -   **Year of Diagnosis**: Integer indicating the year the patient was diagnosed.
 
--   **Site (Recode ICD-O-3/WHO 2008)**: Character variable specifying the type of leukemia diagnosed.
+-   **Site (Recode ICD-O-3/WHO 2008)**: Character variable specifying the type of leukemia diagnosed. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
 
 -   **Behavior Code (ICD-O-3)**: Character variable indicating the malignancy status.
 
--   **Year of Death (Recode)**: Character variable denoting whether the patient is alive or the year of death.
+-   **Year of Death (Recode)**: Character variable denoting whether the patient is alive or the year of death. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
 
 -   **Type of Reporting Source**: Character variable describing the source of the cancer data (e.g., hospital or clinic).
 
