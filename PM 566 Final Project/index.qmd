@@ -7,18 +7,57 @@ output:
         toc_float: TRUE
 ---
 
-## This is my PM 566 Final Project website.
+## PM 566 Health Data Science: Final Project
 
-## Read in Dataset
+**Pediatric Leukemia Cancer Cases (\<10 years) in the US, 2000-2021**
 
-```{r}
+## Description of Project
+
+### **Project Overview:**
+
+This project investigates the demographic factors influencing the survival time of pediatric leukemia patients (under age 10) in the U.S. using data from the SEER (Surveillance, Epidemiology, and End Results) program, which collects cancer incidence data across a significant portion of the U.S. population. The focus of this analysis is to explore how sex, race, median income, and age at diagnosis are associated with survival outcomes for children diagnosed with leukemia.
+
+### **Research Question:**
+
+The primary question addressed in this project is:\
+*What demographic factors (e.g., sex, race, median income, age) are associated with the likelihood of longer survival times in pediatric patients under age 10 diagnosed with malignant leukemia in the U.S.?*
+
+The project seeks to identify if disparities in survival times exist based on sex, race, socioeconomic status, and age, contributing to a deeper understanding of how these factors influence the likelihood of longer survival and, ultimately, the development of targeted healthcare interventions for at-risk populations.
+
+### **Data and Methods:**
+
+The dataset used in this analysis is derived from the SEER program, specifically the "*Incidence - SEER Research Limited-Field Data, 22 Registries, Nov 2023 Sub (2000-2021) - Linked to County Attributes - Time Dependent (1990-2022) Income/Rurality, 1969-2022 Counties*" registry. The dataset covers a wide range of variables, including patient demographics, age, year of diagnosis, site of leukemia, year of death, and median household income. After cleaning and wrangling the data (removing missing values and transforming variables), the focus is on deceased patients to analyze survival time.
+
+The following methods were applied:
+
+-   **Data Cleaning and Transformation**: Renaming variables for simplicity, converting categorical variables to numeric where appropriate, and filtering out "alive" patients to focus on those who have passed away.
+
+-   **Exploratory Analysis**: Using summary statistics and visualizations to investigate trends in survival time based on demographic factors.
+
+-   **Survival Time Calculation**: Creating a new variable for survival time by subtracting the year of diagnosis from the year of death.
+
+### **Key Insights and Visualizations:**
+
+The project includes interactive visualizations to explore the relationship between demographic factors (sex, race, median income, and age) and survival time. Some key insights include:
+
+-   Survival trends across different races and sexes.
+
+-   The impact of median household income on survival.
+
+-   Age-related trends in survival for pediatric leukemia patients.
+
+### **Conclusion:**
+
+This project seeks to explore the demographic disparities in survival outcomes among pediatric leukemia patients, focusing on key insights that could guide healthcare strategies and interventions aimed at improving survival rates in underserved populations.
+
+## Interactive Visualizations
+
+```{r, echo=FALSE}
 # Read in dataset
 leuk <- read.csv("/Users/ericashin/Downloads/Pediatric Malignant Leukemia Cancer Cases in the US (2000-2021, Ages Under 10 Only).csv")
 ```
 
-## Load Libraries
-
-```{r setup, message=FALSE, warning=FALSE}
+```{r setup, message=FALSE, warning=FALSE, echo=FALSE}
 # Load in libraries
 library(dplyr)
 library(ggplot2)
@@ -26,81 +65,8 @@ library(stringr)
 library(knitr)
 library(kableExtra) #extra styling for tables
 library(paletteer) #color palette
-```
+library(plotly)
 
-## 1. Introduction
-
-**Background**:
-
-Leukemia, a type of blood cancer characterized by the rapid growth of abnormal white blood cells in the bone marrow, is the most common type of cancer diagnosed in children - accounting for approximately 28% of all pediatric cancers in the United States. The incidence of leukemia in the pediatric population has raised public health concerns due to its impact on the long-term survival and quality of life of young patients.
-
-The National Institutes of Health (NIH) collects cancer incidence data from population-based cancer registries covering approximately 47.9 percent of the US population in the Surveillance, Epidemiology, and End Results Program (SEER). The SEER registries collect data on patient demographics, primary tumor site, tumor morphology, stage at diagnosis, first course of treatment, and more. In this report, I focus specifically on leukemia cases within the SEER dataset to investigate trends and factors influencing survival among pediatric patients diagnosed with this condition.
-
-**Question of Interest**:
-
-This report aims to address the following research question: **What demographic factors (e.g., sex, race, median income, age) are associated with the likelihood of longer survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US?**
-
-While advancements in medical research and treatment methods have led to improved survival rates, disparities persist based on demographic factors such as sex, race, socioeconomic status, and age. Understanding these disparities is crucial for developing targeted interventions that can enhance treatment efficacy and support systems for vulnerable populations.
-
-## 2. Methods
-
-NIH provides a statistical software tool (available for download on their website) called SEER\*Stat to access and analyze SEER data. Once I gained access to SEER\*Stat, I looked through the list of registries and curated my dataset by selecting specific variables I wanted to examine in a case listing session.
-
-My dataset comes from the specific NIH SEER registry called "Incidence - SEER Research Limited-Field Data, 22 Registries, Nov 2023 Sub (2000-2021) - Linked To County Attributes - Time Dependent (1990-2022) Income/Rurality, 1969-2022 Counties." I chose to create my dataset based off this specific registry because it has the largest geographic coverage available - approximately 47.9% of the U.S. population (based on 2020 census).
-
-To explore the question of interest, my dataset focuses on the following 13 variables:
-
--   **Patient ID**: Integer identifier for each patient.
-
--   **Sex**: Character variable indicating the patient's sex (e.g., "Female", "Male").
-
--   **Race (Recode: White, Black, Other)**: Character variable representing the patient's race. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
-
--   **Race Ethnicity**: Character variable detailing the specific ethnicity of the patient.
-
--   **Age (Recode with Single Ages and 90+)**: Character variable indicating the patient's age. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
-
--   **Age (Recode with \<1 Year Olds)**: Character variable representing age ranges. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
-
--   **Year of Diagnosis**: Integer indicating the year the patient was diagnosed.
-
--   **Site (Recode ICD-O-3/WHO 2008)**: Character variable specifying the type of leukemia diagnosed. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
-
--   **Behavior Code (ICD-O-3)**: Character variable indicating the malignancy status.
-
--   **Year of Death (Recode)**: Character variable denoting whether the patient is alive or the year of death. The variable name was taken directly from the dataset (i.e., recoding was performed by SEER).
-
--   **Type of Reporting Source**: Character variable describing the source of the cancer data (e.g., hospital or clinic).
-
--   **Median Household Income (Inflation Adjusted to 2022)**: Character variable representing the income bracket of the patient's household.
-
--   **Rural-Urban Continuum Code**: Character variable indicating the population type of the area where the patient resides.
-
-**Data Exploration Tools**:
-
-The following tools were used to explore the data.
-
--   **dim()**: Used to look at the dimensions of the initial dataset (26,916 observations by 13 variables).
-
--   **str()**: Provided information about the types of variables contained in the initial dataset (2 integer and 11 character variables).
-
--   **colnames()**: Provided information about the variable or column names.
-
--   **head()** and **tail**(): Utilized to look at the first and last six observations.
-
--   **table()**: Used to count occurrences of specific variables.
-
--   **summary()**: Provided statistical summaries like mean, median, min, max, and quartiles for specific variables.
-
-**Cleaning and Wrangling**:
-
-To clean the data, I first renamed the columns to make the variable names simpler and easier to use for coding purposes. Then, I checked for any missing observations in the key variables (sex, race, age, age range, and median income). Only the variable for median income (med_income) had missing observations, so I filtered them out of my dataset.
-
-For my question of interest, I wanted to focus on the survival time for patients who had already passed away, so I filtered out observations that were categorized as "Alive at last contact" and only kept patients that have a year of death. It is important to note that this may introduce some bias in my dataset as factors associated with better survival will be less common in the data. After filtering, the dataset dimensions were 3457 observations by 14 variables.
-
-Next, I noticed that the variables for year of death (year_death) and single ages (age) were character variables, so I converted them to numeric variables for easier calculations and visualizations. Finally, I created a new variable (surv) to calculate the survival time for each patient by subtracting the year of diagnosis from the year of death.
-
-```{r, message=FALSE, warning=FALSE}
 # Rename variable column names
 leuk <- leuk |>
   rename(id = Patient.ID,
@@ -116,13 +82,6 @@ leuk <- leuk |>
          med_income = Median.household.income.inflation.adj.to.2022,
          rep_source = Type.of.Reporting.Source,
          loc_type = Rural.Urban.Continuum.Code)
-
-# Check for missing observations in key variables
-#mean(is.na(leuk$sex))
-#mean(is.na(leuk$race))
-#mean(is.na(leuk$med_income))
-#mean(is.na(leuk$age))
-#mean(is.na(leuk$age_range))
 
 leuk <- leuk |> filter(!is.na(med_income))
 
@@ -142,34 +101,63 @@ leuk <- leuk |>
   mutate(surv = year_death - year_dx)
 ```
 
-## 3. Preliminary Results
+**Visualization 1.** Interactive Barchart of Average Survival Time (Years) by Sex
 
-**a. Summary Statistics**
+```{r, echo=FALSE}
+# Interactive Barchart of Average Survival Time (Years) by Sex
+one <- leuk |>
+  ggplot(mapping = aes(x = sex, y = surv, fill = sex)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  labs(title = "Barchart of Average Survival Time (Years) by Sex",
+       x = "Sex",
+       y = "Average Survival Time (Years)",
+       fill = "Sex") +
+  theme_minimal() +
+  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) +
+  theme(legend.position = "none") # Hide the legend
 
-**Table 1.** Summary Statistics of Survival Time by Sex
+# Convert the ggplot to an interactive plot using plotly
+plot1 <- ggplotly(one)
 
-```{r}
-# Sex
-sum_sex <- leuk |>
-  group_by(sex) |>
-  summarize(
-    Count = n(),
-    Mean = mean(surv, na.rm = TRUE),
-    Median = median(surv, na.rm = TRUE),
-    SD = sd(surv, na.rm = TRUE),
-    .groups = 'drop'
-  )
-
-# Display summary statistics tables for sex
-kable(sum_sex, caption = "Summary Statistics of Survival Times by Sex", 
-      col.names = c("Sex", "Count of Patients", "Average Survival (Years)", "Median Survival (Years)", "Standard Deviation")) |>
-  kable_styling(full_width = F, position = "left")
+# Show the interactive plot
+plot1
 ```
 
-**Table 2.** Summary Statistics of Survival Time by Race
+Males had a higher average survival time (2.494 years) compared to females (2.168 years).
 
-```{r}
-# Race
+------------------------------------------------------------------------
+
+**Visualization 2.** Interactive Barchart of Average Survival Time (Years) by Race
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Interactive Barchart of Average Survival Time (Years) by Race
+two <- leuk |>
+  ggplot(mapping = aes(x = race, y = surv, fill = race)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  labs(title = "Barchart of Average Survival Time (Years) by Race",
+       x = "Race",
+       y = "Average Survival Time (Years)",
+       fill = "Race") +
+  theme_minimal() +
+  scale_fill_paletteer_d("lisa::BridgetRiley") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  theme(legend.position = "none") # Hide the legend
+
+# Convert the ggplot to an interactive plot using plotly
+plot2 <- ggplotly(two)
+
+# Show the interactive plot
+plot2
+```
+
+Among racial categories, the "Unknown" group had the highest average survival time at 2.450 years, closely followed by "Other (American Indian/AK Native, Asian/Pacific Islander)" at 2.446 years.
+
+------------------------------------------------------------------------
+
+**Visualization 3.** Interactive Barchart of Patient Count/Sample Size by Race
+
+```{r, echo=FALSE, warning=FALSE}
+# Interactive Barchart of Patient Count/Sample Size by Race using plotly
 sum_race <- leuk |>
   group_by(race) |>
   summarize(
@@ -180,55 +168,36 @@ sum_race <- leuk |>
     .groups = 'drop'
   )
 
-# Display summary statistics tables for race
-kable(sum_race, caption = "Summary Statistics of Survival Times by Race", 
-      col.names = c("Race", "Count of Patients", "Average Survival (Years)", "Median Survival (Years)", "Standard Deviation")) |>
-  kable_styling(full_width = F, position = "left")
-```
-
-**Table 3.** Summary Statistics of Survival Time by Race and Sex
-
-```{r}
-# Race and Sex
-sum_race_sex <- leuk |>
-  group_by(race, sex) |>
-  summarize(
-    Count = n(),
-    Mean = mean(surv, na.rm = TRUE),
-    Median = median(surv, na.rm = TRUE),
-    SD = sd(surv, na.rm = TRUE),
-    .groups = 'drop'
+plot3 <- plot_ly(sum_race, 
+               x = ~race, 
+               y = ~Count, 
+               type = 'bar',  
+               hoverinfo = ~paste("<br>Patient Count: ", Count),  
+               marker = list(
+                     color = paletteer_d("lisa::BridgetRiley")[factor(sum_race$race)]
+                     )) |>
+  layout(
+    title = 'Barchart of Patient Count/Sample Size by Race',
+    xaxis = list(
+      title = 'Race',
+      tickangle = 0,  
+      tickmode = 'array',  
+      tickvals = sum_race$race,  
+      ticktext = sapply(sum_race$race, function(x) str_wrap(x, width = 10))
+    ),
+    yaxis = list(title = 'Patient Count')
   )
 
-# Display summary statistics tables for race and sex
-kable(sum_race_sex, caption = "Summary Statistics of Survival Times by Race and Sex", 
-      col.names = c("Race", "Sex", "Count of Patients", "Average Survival (Years)", "Median Survival (Years)", "Standard Deviation")) |>
-  kable_styling(full_width = F, position = "left")
+plot3
 ```
 
-**Table 4.** Summary Statistics of Survival Time by Age and Age Range of Diagnosis
+The majority of patients in the dataset were classified as "White" (2703 out of 3457 patients or 78%) while the "Unknown" category contained only 20 patients (5.8%), compared to 307 for "Other" (8.9%) and 427 for "Black" (12.4%).
 
-```{r}
-# Age of Diagnosis and Age Range of Diagnosis
-sum_age_range <- leuk |>
-  group_by(age, age_range) |>
-  summarize(
-    Count = n(),
-    Mean = mean(surv, na.rm = TRUE),
-    Median = median(surv, na.rm = TRUE),
-    SD = sd(surv, na.rm = TRUE),
-    .groups = 'drop'
-  )
+------------------------------------------------------------------------
 
-# Display summary statistics tables for age and age range
-kable(sum_age_range, caption = "Summary Statistics of Survival Times by Age and Age Range of Diagnosis", 
-      col.names = c("Age of Diagnosis", "Age Range of Diagnosis", "Count of Patients", "Average Survival (Years)", "Median Survival (Years)", "Standard Deviation")) |>
-  kable_styling(full_width = F, position = "left")
-```
+**Visualization 4.** Interactive Scatterplot of Average Survival Time (Years) by Median Income
 
-**Table 5.** Summary Statistics of Survival Time by Median Income
-
-```{r}
+```{r, echo=FALSE}
 # Median Income
 
 # Define a specific order for the income ranges
@@ -251,113 +220,8 @@ sum_med_income <- leuk |>
   ) |>
   arrange(desc(med_income))  #sorting by the ordered factor
 
-# Display summary statistics table for median income
-kable(sum_med_income, 
-      caption = "Summary Statistics of Survival Times by Median Income", 
-      align = 'c',
-      col.names = c("Median Income Range", "Count of Patients", "Average Survival (Years)", "Median Survival (Years)", "Standard Deviation")) |>
-  kable_styling(full_width = FALSE, position = "left", font_size = 12)
-```
-
-**b. Visualizations**
-
-**Figure 1.** Barchart of Average Survival Time (Years) by Sex
-
-```{r}
-# Barchart of Average Survival Time (Years) by Sex
-leuk |>
-  ggplot(mapping = aes(x = sex, y = surv, fill = sex)) +
-  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
-  labs(title = "Barchart of Average Survival Time (Years) by Sex",
-       x = "Sex",
-       y = "Average Survival Time (Years)",
-       fill = "Sex") +
-  theme_minimal() + scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-**Figure 2.** Barchart of Average Survival Time (Years) by Race
-
-```{r}
-# Barchart of Average Survival Time (Years) by Race
-leuk |>
-  ggplot(mapping=aes(x = race, y = surv, fill = race)) +
-  geom_bar(stat = "summary", fun = "mean") +
-  labs(title = "Barchart of Average Survival Time (Years) by Race",
-       x = "Race",
-       y = "Average Survival Time (Years)",
-       fill = "Race") +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 5)) +
-  theme_minimal() + 
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-**Figure 3.** Boxplot of Average Survival Time (Years) by Race
-
-```{r}
-# Boxplot of Average Survival Time by Race
-ggplot(leuk, aes(x = race, y = surv, fill = race)) +
-    geom_boxplot() +
-    labs(title = "Boxplot of Average Survival Time by Race",
-         x = "Race",
-         y = "Average Survival Time (Years)") +
-    theme_minimal() +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-**Figure 4.** Barchart of Average Survival Time (Years) by Race and Sex
-
-```{r}
-# Faceted barchart of average survival time by race and sex
-sum_race_sex |>
-  filter(!is.na(race) & !is.na(sex)) |>
-  ggplot(mapping=aes(x=sex, y=Mean, fill=sex)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(~ race, labeller = label_wrap_gen(width = 35)) +
-  labs(title = "Barchart of Sex and Race by Average Survival Time (Years)",
-       x = "Sex",
-       y = "Average Survival Time (Years)",
-       fill = "Sex") +
-  theme_minimal() +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-**Figure 5.** Stacked Barchart of Average Survival Time (Years) by Race and Sex
-
-```{r}
-# Stacked histogram of Average Survival Time (Years) by Sex and Race
-sum_race_sex |>
-  ggplot(mapping=aes(x = race, y = Mean, fill = sex)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Stacked Histogram of Average Survival Time (Years) by Sex and Race",
-       x = "Sex",
-       y = "Average Survival Time (Years)") +
-  theme_minimal() +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-**Figure 6.** Stacked Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis
-
-```{r}
-# Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis
-sum_age_range |>
-  ggplot(mapping=aes(x = age, y = Mean, fill = age_range)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis",
-       x = "Age of Diagnosis",
-       y = "Average Survival Time (Years)",
-       fill = "Age Range of Diagnosis") +
-  theme_minimal() +
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-**Figure 7.** Scatterplot of Average Survival Time (Years) by Median Income
-
-```{r}
-# Scatter plot of average survival time by median income
-sum_med_income |>
+# Create the ggplot scatter plot
+four <- sum_med_income |>
   filter(!is.na(med_income)) |>
   ggplot(mapping=aes(x=med_income, y=Mean)) +
   geom_point() +
@@ -365,34 +229,28 @@ sum_med_income |>
        x = "Median Income",
        y = "Average Survival Time (Years)") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #wrapping x-axis labels
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+
+# Convert the ggplot to an interactive plot using plotly
+plot4 <- ggplotly(four)
+
+# Show the interactive plot
+plot4
 ```
 
-**Figure 8.** Barchart of Average Survival Time (Years) by Sex, Race, and Age-range of Diagnosis
+There appears to be a positive association between median income and average survival time, indicating that higher income is correlated with better survival outcomes.
 
-```{r}
-# Barplot of average survival time by sex, race, and age-range of diagnosis
-leuk |>
-  ggplot(mapping=aes(x = sex, y = surv, fill = age_range)) +
-  geom_bar(stat = "summary", fun = "mean") +
-  facet_wrap(~ race, labeller = label_wrap_gen(width = 35)) +
-  labs(title = "Average Survival Time by Sex, Race, and Age-Range of Diagnosis",
-       x = "Sex",
-       y = "Average Survival Time (Years)",
-       fill = "Age Range of Diagnosis") +
-  theme_minimal() +
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
+------------------------------------------------------------------------
 
-**Figure 9.** Lineplot Average Survival Time (Years) by Age of Diagnosis and Race
+**Visualization 5.** Interactive Line Plot of Average Survival Time by Age of Diagnosis and Race
 
-```{r}
-# Line plot of average survival time by age of diagnosis and race
+```{r, echo=FALSE}
+# Interactive Line Plot of Average Survival Time by Age of Diagnosis and Race
 avg_surv_age_race <- leuk |> 
   group_by(age, race) |> 
   summarize(avg_surv = mean(surv, na.rm = TRUE), .groups = 'drop')
 
-ggplot(avg_surv_age_race, aes(x = age, y = avg_surv, color = race, group = race)) +
+five <- ggplot(avg_surv_age_race, aes(x = age, y = avg_surv, color = race, group = race)) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
   labs(title = "Average Survival Time by Age of Diagnosis and Race",
@@ -400,13 +258,19 @@ ggplot(avg_surv_age_race, aes(x = age, y = avg_surv, color = race, group = race)
        y = "Average Survival Time (Years)",
        color = "Race") +
   theme_minimal() +
-  scale_color_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
+  scale_color_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # wrapped labels
+
+# Convert the ggplot to an interactive plot using plotly
+plot5 <- ggplotly(five)
+
+# Display the interactive plot
+plot5
 ```
 
-## 4. Conclusion
+The discrepancy in sample sizes suggests that average survival times for the smaller race categories may be more susceptible to outliers, especially in the "Unknown" group, which exhibited an unusually high average survival time of around 15 years for patients approximately 2.5 years old.
 
-In analyzing the data, it was found that males had a higher average survival time (2.494 years) compared to females (2.168 years). Among racial categories, "Unknown" had the highest average survival time at 2.450 years, closely followed by "Other (American Indian/AK Native, Asian/Pacific Islander)" at 2.446 years. However, it is important to note that the majority of patients were classified as "White" (2703 out of 3457 patients or 78%) while the "Unknown" category contained only 20 patients (5.8%), compared to 307 for "Other" (8.9%) and 427 for "Black" (12.4%). This discrepancy suggests that average survival times for the smaller categories may be more susceptible to outliers, especially in the "Unknown" group, which exhibited an unusually high average survival time of around 15 years for patients approximately 2.5 years old.
+------------------------------------------------------------------------
 
-Additionally, there appears to be a positive association between median income and average survival time, indicating that higher income is correlated with better survival outcomes. Age also played a significant role; the majority of observations were in the 1-4 and 5-9 year ranges. Newborns (0 years) showed significantly lower average survival times, likely due to their increased vulnerability to disease as well the age range spanning less years than the other categories.
+## Full Report
 
-Overall, preliminary analysis suggests that demographic factors such as being male, coming from a higher-income household, and being older are associated with longer survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US.
+Download the PDF version of the full report [here](./docs/Final-Project-Report.pdf).
