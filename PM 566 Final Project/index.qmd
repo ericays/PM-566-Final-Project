@@ -9,7 +9,7 @@ output:
 
 ## PM 566 Health Data Science: Final Project
 
-**Pediatric Leukemia Cancer Cases (\<10 years) in the US, 2000-2021**
+**Pediatric Leukemia Cancer Cases (\<10 years) in the U.S., 2000-2021**
 
 ## Description of Project
 
