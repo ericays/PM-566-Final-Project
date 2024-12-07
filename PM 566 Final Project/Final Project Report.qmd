@@ -1,5 +1,6 @@
 ---
-title: "Final Project Report"
+title: "Pediatric Leukemia Cases in the U.S.:"
+subtitle: "An Analysis of Demographic Factors Influencing Survival Outcomes"
 author: "Erica Shin"
 format: pdf
 editor: visual
@@ -7,6 +8,8 @@ embed-resources: true
 ---
 
 ```{r, echo=FALSE}
+# U.S. Pediatric Leukemia: An Analysis of Demographic Factors Influencing Survival Outcomes
+# Understanding Survival Outcomes for U.S. Pediatric Leukemia Cases: A Demographic Analysis
 # Read in dataset
 leuk <- read.csv("/Users/ericashin/Downloads/Pediatric Malignant Leukemia Cancer Cases in the US (2000-2021, Ages Under 10 Only).csv")
 ```
@@ -38,17 +41,17 @@ The National Cancer Institute (NCI) collects cancer incidence data from populati
 
 **Question of Interest**:
 
-This report aims to address the following research question: **What demographic factors (e.g., sex, race, median income, age) are associated with the likelihood of longer survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US?**
+This report aims to address the following research question:
 
-While advancements in medical research and treatment methods have led to improved survival rates, disparities persist based on demographic factors such as sex, race, socioeconomic status, and age. Understanding these disparities is crucial for developing targeted interventions that can enhance treatment efficacy and support systems for vulnerable populations.
+**What demographic factors (e.g., sex, race, median income, age) are associated with the likelihood of longer survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US?**
 
-------------------------------------------------------------------------
+While advancements in medical research and treatment methods have led to improved survival rates, disparities persist based on demographic factors such as sex, race, socioeconomic status, and age. Understanding these disparities is crucial for developing targeted interventions that can enhance treatment efficacy and support systems for vulnerable populations. \vspace{2mm}
 
 ## 2. Methods
 
 The data for this analysis was sourced from the SEER registries, which provides comprehensive cancer statistics and serves as a crucial resource for understanding trends in cancer incidence, treatment, and survival across the United States. To access and analyze the SEER data, the statistical software tool **SEER\*Stat** was used. This tool allows for the selection and analysis of variables within the SEER registries and is available for download on the NCI's website.
 
-The dataset utilized in this report comes from the SEER registry titled "**Incidence - SEER Research Limited-Field Data, 22 Registries, Nov 2023 Sub (2000-2021) - Linked to County Attributes - Time Dependent (1990-2022) Income/Rurality, 1969-2022 Counties**." This particular registry was chosen due to its extensive geographic coverage, representing approximately 47.9% of the U.S. population, as based on the 2020 U.S. Census. The dataset for the report was curated by selecting specific variables from the registry and offers a comprehensive view of the factors influencing survival among pediatric leukemia patients, with a focus on key demographic variables such as sex, race, and socioeconomic status.
+The dataset utilized in this report comes from the SEER registry titled "**Incidence - SEER Research Limited-Field Data, 22 Registries, Nov 2023 Sub (2000-2021) - Linked to County Attributes - Time Dependent (1990-2022) Income/Rurality, 1969-2022 Counties**." This particular registry was chosen due to its extensive geographic coverage, representing approximately 47.9% of the U.S. population, as based on the 2020 U.S. Census. The dataset for the report was curated by selecting specific variables from the registry and offers a comprehensive view of the factors influencing survival among pediatric leukemia patients, with a focus on key demographic variables such as sex, race, and socioeconomic status. \vspace{3mm}
 
 To explore the question of interest, the dataset for this report focuses on the following 13 variables:
 
@@ -76,7 +79,7 @@ To explore the question of interest, the dataset for this report focuses on the 
 
 -   **Median Household Income (Inflation Adjusted to 2022)**: Character variable representing the income bracket of the patient's household.
 
--   **Rural-Urban Continuum Code**: Character variable indicating the population type of the area where the patient resides.
+-   **Rural-Urban Continuum Code**: Character variable indicating the population type of the area where the patient resides. \vspace{1mm}
 
 The names of all 13 variables were taken directly from SEER, with recodings also performed by SEER.
 
@@ -154,7 +157,7 @@ leuk <- leuk |>
 
 ## 3. Results
 
-**a. Summary Statistics**
+**a. Summary Statistics** \vspace{1mm}
 
 **Table 1.** Summary Statistics of Survival Time by Sex
 
@@ -177,7 +180,7 @@ kable(sum_sex,
   column_spec(1, width = "3cm")
 ```
 
-------------------------------------------------------------------------
+\vspace{2mm}
 
 **Table 2.** Summary Statistics of Survival Time by Race
 
@@ -200,11 +203,11 @@ kable(sum_race,
   column_spec(1, width = "3cm")
 ```
 
-------------------------------------------------------------------------
+\vspace{2mm}
 
 **Table 3.** Summary Statistics of Survival Time by Race and Sex
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Race and Sex
 sum_race_sex <- leuk |>
   group_by(race, sex) |>
@@ -223,11 +226,11 @@ kable(sum_race_sex,
   column_spec(1, width = "3cm")
 ```
 
-------------------------------------------------------------------------
+\vspace{2mm}
 
 **Table 4.** Summary Statistics of Survival Time by Age and Age Range of Diagnosis
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Age of Diagnosis and Age Range of Diagnosis
 sum_age_range <- leuk |>
   group_by(age, age_range) |>
@@ -246,7 +249,7 @@ kable(sum_age_range,
   column_spec(1, width = "1cm")
 ```
 
-------------------------------------------------------------------------
+\vspace{2mm}
 
 **Table 5.** Summary Statistics of Survival Time by Median Income
 
@@ -281,13 +284,13 @@ kable(sum_med_income,
   column_spec(1, width = "3cm")
 ```
 
-------------------------------------------------------------------------
+\vspace{1mm}
 
-**b. Visualizations**
+**b. Visualizations** \vspace{1mm}
 
 **Figure 1.** Barchart of Average Survival Time (Years) by Sex
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Barchart of Average Survival Time (Years) by Sex
 leuk |>
   ggplot(mapping = aes(x = sex, y = surv, fill = sex)) +
@@ -301,11 +304,11 @@ leuk |>
 
 Males had a higher average survival time (2.494 years) compared to females (2.168 years).
 
-------------------------------------------------------------------------
+\vspace{3mm}
 
 **Figure 2.** Barchart of Average Survival Time (Years) by Race
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Barchart of Average Survival Time (Years) by Race
 leuk |>
   ggplot(mapping=aes(x = race, y = surv, fill = race)) +
@@ -321,11 +324,11 @@ leuk |>
 
 Among racial categories, the "Unknown" group had the highest average survival time at 2.450 years, closely followed by "Other (American Indian/AK Native, Asian/Pacific Islander)" at 2.446 years.
 
-------------------------------------------------------------------------
+\vspace{3mm}
 
 **Figure 3.** Barchart of Patient Count (Sample Size) by Race
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Barchart of Patient Count (Sample Size) by Race
 ggplot(sum_race, aes(x = race, y = Count, fill = factor(race))) + 
   geom_bar(stat = "identity", show.legend = FALSE) +  
@@ -338,11 +341,11 @@ ggplot(sum_race, aes(x = race, y = Count, fill = factor(race))) +
 
 The majority of patients in the dataset were classified as "White" (2703 out of 3457 patients or 78%) while the "Unknown" category contained only 20 patients (5.8%), compared to 307 for "Other" (8.9%) and 427 for "Black" (12.4%) - can also refer to **Table 2.** Summary Statistics of Survival Time by Race.
 
-------------------------------------------------------------------------
+\vspace{3mm}
 
 **Figure 4.** Barchart of Average Survival Time (Years) by Race and Sex
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Faceted barchart of average survival time by race and sex
 sum_race_sex |>
   filter(!is.na(race) & !is.na(sex)) |>
@@ -360,49 +363,11 @@ sum_race_sex |>
 
 Among the four race categories, the Unknown" group had the largest discrepancy in average survival time between males and females.
 
-------------------------------------------------------------------------
+\vspace{3mm}
 
-**Figure 5.** Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis
+**Figure 5.** Lineplot Average Survival Time (Years) by Age of Diagnosis and Race
 
-```{r, echo=FALSE}
-# Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis
-sum_age_range |>
-  ggplot(mapping=aes(x = age, y = Mean, fill = age_range)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis",
-       x = "Age of Diagnosis",
-       y = "Average Survival Time (Years)",
-       fill = "Age Range of Diagnosis") +
-  theme_minimal() +
-  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
-```
-
-The majority of observations were in the 1-4 and 5-9 year ranges. Newborns (0 years) showed significantly lower average survival times, likely due to their increased vulnerability to disease as well the age range spanning less years than the other categories.
-
-------------------------------------------------------------------------
-
-**Figure 6.** Scatterplot of Average Survival Time (Years) by Median Income
-
-```{r, echo=FALSE}
-# Scatter plot of average survival time by median income
-sum_med_income |>
-  filter(!is.na(med_income)) |>
-  ggplot(mapping=aes(x=med_income, y=Mean)) +
-  geom_point() +
-  labs(title = "Scatter Plot of Median Income by Average Survival Time (Years)",
-       x = "Median Income",
-       y = "Average Survival Time (Years)") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #wrapping x-axis labels
-```
-
-There appears to be a positive association between median income and average survival time, indicating that higher income is correlated with better survival outcomes.
-
-------------------------------------------------------------------------
-
-**Figure 7.** Lineplot Average Survival Time (Years) by Age of Diagnosis and Race
-
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align='center'}
 # Line plot of average survival time by age of diagnosis and race
 avg_surv_age_race <- leuk |> 
   group_by(age, race) |> 
@@ -419,16 +384,61 @@ ggplot(avg_surv_age_race, aes(x = age, y = avg_surv, color = race, group = race)
   scale_color_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
 ```
 
-The discrepancy in sample sizes suggests that average survival times for the smaller race categories may be more susceptible to outliers, especially in the "Unknown" group, which exhibited an unusually high average survival time of around 15 years for patients approximately 2.5 years old - can also refer to **Figure 7.** Lineplot Average Survival Time (Years) by Age of Diagnosis and Race.
+The discrepancy in sample sizes among racial groups suggests that average survival times for the smaller race categories may be more susceptible to outliers, especially in the "Unknown" group, which exhibited an unusually high average survival time of around 15 years for patients approximately 2.5 years old.
 
-------------------------------------------------------------------------
+\vspace{3mm}
+
+**Figure 6.** Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis
+
+```{r, echo=FALSE, fig.align='center'}
+# Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis
+sum_age_range |>
+  ggplot(mapping=aes(x = age, y = Mean, fill = age_range)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Barchart of Average Survival Time (Years) by Age and Age Range of Diagnosis",
+       x = "Age of Diagnosis",
+       y = "Average Survival Time (Years)",
+       fill = "Age Range of Diagnosis") +
+  theme_minimal() +
+  scale_fill_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # using color palette with wrapped labels
+```
+
+The majority of observations were in the 1-4 and 5-9 year ranges. Newborns (0 years) showed significantly lower average survival times, likely due to their increased vulnerability to disease as well the age range spanning less years than the other categories.
+
+\vspace{3mm}
+
+**Figure 7.** Scatterplot of Average Survival Time (Years) by Median Income
+
+```{r, echo=FALSE, fig.align='center'}
+# Scatter plot of average survival time by median income
+sum_med_income |>
+  filter(!is.na(med_income)) |>
+  ggplot(mapping=aes(x=med_income, y=Mean)) +
+  geom_point() +
+  labs(title = "Scatter Plot of Median Income by Average Survival Time (Years)",
+       x = "Median Income",
+       y = "Average Survival Time (Years)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #wrapping x-axis labels
+```
+
+There appears to be a positive association between median income and average survival time, indicating that higher income is correlated with better survival outcomes.
+
+\vspace{3mm}
 
 ## 4. Conclusion and Summary
 
-In conclusion, the preliminary analysis indicates that several demographic factors—such as gender, income level, and age—are associated with longer survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US. Males, older children, and those from higher-income backgrounds generally exhibited longer survival times.
+In conclusion, the preliminary analysis indicates that several demographic factors—such as gender, income level, and age—are associated with longer average survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US. Specifically, males, older children, and those from higher-income backgrounds generally exhibited longer average survival times.
+
+-   **Gender (Males having longer survival times)**:\
+    Males may have better survival outcomes due to biological differences in disease progression and treatment response. Additionally, gender-based differences in drug metabolism or healthcare treatment could influence survival.
+
+-   **Age (Older children surviving longer)**:\
+    Older children may experience slower disease progression and have a stronger immune response, leading to better outcomes. They are also more likely to receive higher-intensity treatments, like chemotherapy or bone marrow transplants, and may better tolerate treatment side effects than younger children, who are more vulnerable.
+
+-   **Income Level (Higher-income patients surviving longer)**:\
+    Higher-income families often have better access to healthcare, earlier diagnosis, and participation in clinical trials, all of which contribute to improved survival. They also have better insurance, nutrition, and psychosocial support, reducing financial barriers that could affect treatment adherence and outcomes.
 
 It is important to note that the distribution of patients across racial categories was uneven, with the majority classified as "White" (78% of the dataset). The smaller sample sizes in categories such as "Unknown" (5.8%) and "Other" (8.9%) suggest that these groups' survival data may be more sensitive to outliers, particularly in the "Unknown" category, which reported unusually high survival times, possibly due to a small number of cases with long survival.
 
-Further analysis is required to explore these relationships in more depth and account for potential confounding variables.
-
-The analysis reveals potential disparities that warrant further investigation and suggests that targeted healthcare strategies may be necessary to address these disparities. These findings can inform future research and guide healthcare professionals in providing better support to vulnerable pediatric populations affected by leukemia.
+While these findings suggest potential disparities, further analysis is needed to explore the relationships in more depth and account for confounding variables. This research underscores the need for targeted healthcare strategies to address disparities and provide better support for vulnerable pediatric populations affected by leukemia. These insights can inform future research and help guide healthcare professionals in improving survival outcomes for all patients.

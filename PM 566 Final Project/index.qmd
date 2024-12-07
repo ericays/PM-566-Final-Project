@@ -1,5 +1,5 @@
 ---
-title: "PM 566 Final Project"
+title: "Understanding Survival Outcomes in U.S. Pediatric Leukemia Cases: A Demographic Analysis"
 author: "Erica Shin"
 output: 
     html_document:
@@ -7,22 +7,19 @@ output:
         toc_float: TRUE
 ---
 
-## PM 566 Health Data Science: Final Project
-
-**Pediatric Leukemia Cancer Cases (\<10 years) in the U.S., 2000-2021**
-
-## Description of Project
+## PM 566 Health Data Science Final Project
 
 ### **Project Overview:**
 
-This project investigates the demographic factors influencing the survival time of pediatric leukemia patients (under age 10) in the U.S. using data from the SEER (Surveillance, Epidemiology, and End Results) program, which collects cancer incidence data across a significant portion of the U.S. population. The focus of this analysis is to explore how sex, race, median income, and age at diagnosis are associated with survival outcomes for children diagnosed with leukemia.
+This project investigates the demographic factors influencing the survival time of pediatric leukemia patients (under age 10) in the U.S. from 2000-2021 using data from the SEER (Surveillance, Epidemiology, and End Results) program, which collects cancer incidence data across a significant portion of the U.S. population. The focus of this analysis is to explore how sex, race, median income, and age at diagnosis are associated with survival outcomes for children diagnosed with leukemia. <br>
 
 ### **Research Question:**
 
-The primary question addressed in this project is:\
+The primary question addressed in this project is:
+
 *What demographic factors (e.g., sex, race, median income, age) are associated with the likelihood of longer survival times in pediatric patients under age 10 diagnosed with malignant leukemia in the U.S.?*
 
-The project seeks to identify if disparities in survival times exist based on sex, race, socioeconomic status, and age, contributing to a deeper understanding of how these factors influence the likelihood of longer survival and, ultimately, the development of targeted healthcare interventions for at-risk populations.
+The project seeks to identify if disparities in survival outcomes exist based on demographic factors such as sex, race, socioeconomic status, and age, focusing on key insights that could guide healthcare strategies and interventions aimed at improving survival rates in underserved populations. <br>
 
 ### **Data and Methods:**
 
@@ -34,7 +31,7 @@ The following methods were applied:
 
 -   **Exploratory Analysis**: Using summary statistics and visualizations to investigate trends in survival time based on demographic factors.
 
--   **Survival Time Calculation**: Creating a new variable for survival time by subtracting the year of diagnosis from the year of death.
+-   **Survival Time Calculation**: Creating a new variable for survival time by subtracting the year of diagnosis from the year of death. <br>
 
 ### **Key Insights and Visualizations:**
 
@@ -44,11 +41,15 @@ The project includes interactive visualizations to explore the relationship betw
 
 -   The impact of median household income on survival.
 
--   Age-related trends in survival for pediatric leukemia patients.
+-   Age-related trends in survival for pediatric leukemia patients. <br>
 
 ### **Conclusion:**
 
-This project seeks to explore the demographic disparities in survival outcomes among pediatric leukemia patients, focusing on key insights that could guide healthcare strategies and interventions aimed at improving survival rates in underserved populations.
+The preliminary analysis indicates that several demographic factors—such as gender, income level, and age—are associated with longer average survival times in deceased pediatric patients under age 10 diagnosed with malignant leukemia in the US. Specifically, males, older children, and those from higher-income backgrounds generally exhibited longer average survival times. While these findings suggest potential disparities, further analysis is needed to explore the relationships in more depth. <br><br>
+
+## Full Report
+
+See the full analysis in the wrriten report [here](./docs/Final-Project-Report.pdf). <br><br>
 
 ## Interactive Visualizations
 
@@ -104,10 +105,15 @@ leuk <- leuk |>
 **Visualization 1.** Interactive Barchart of Average Survival Time (Years) by Sex
 
 ```{r, echo=FALSE}
+# Calculate average survival by sex
+average_surv_by_sex <- leuk %>%
+  group_by(sex) %>%
+  summarise(average_surv = mean(surv, na.rm = TRUE))
+
 # Interactive Barchart of Average Survival Time (Years) by Sex
-one <- leuk |>
-  ggplot(mapping = aes(x = sex, y = surv, fill = sex)) +
-  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+one <- ggplot(average_surv_by_sex, aes(x = sex, y = average_surv, fill = sex, 
+                                      text = paste("Sex: ", sex, "<br>Average Survival: ", round(average_surv, 2), "years"))) +
+  geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Barchart of Average Survival Time (Years) by Sex",
        x = "Sex",
        y = "Average Survival Time (Years)",
@@ -117,23 +123,28 @@ one <- leuk |>
   theme(legend.position = "none") # Hide the legend
 
 # Convert the ggplot to an interactive plot using plotly
-plot1 <- ggplotly(one)
+plot1 <- ggplotly(one, tooltip = "text")
 
 # Show the interactive plot
 plot1
 ```
 
-Males had a higher average survival time (2.494 years) compared to females (2.168 years).
+<br> Males had a higher average survival time (2.494 years) compared to females (2.168 years).
 
 ------------------------------------------------------------------------
 
 **Visualization 2.** Interactive Barchart of Average Survival Time (Years) by Race
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Calculate average survival for each race
+average_surv_by_race <- leuk %>%
+  group_by(race) %>%
+  summarise(average_surv = mean(surv, na.rm = TRUE))
+
 # Interactive Barchart of Average Survival Time (Years) by Race
-two <- leuk |>
-  ggplot(mapping = aes(x = race, y = surv, fill = race)) +
-  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+two <- ggplot(average_surv_by_race, aes(x = race, y = average_surv, fill = race, 
+                                       text = paste("Race: ", race, "<br>Average Survival: ", round(average_surv, 3), " years"))) +
+  geom_bar(stat = "identity", position = "dodge") + 
   labs(title = "Barchart of Average Survival Time (Years) by Race",
        x = "Race",
        y = "Average Survival Time (Years)",
@@ -144,7 +155,7 @@ two <- leuk |>
   theme(legend.position = "none") # Hide the legend
 
 # Convert the ggplot to an interactive plot using plotly
-plot2 <- ggplotly(two)
+plot2 <- ggplotly(two, tooltip = "text")
 
 # Show the interactive plot
 plot2
@@ -195,7 +206,37 @@ The majority of patients in the dataset were classified as "White" (2703 out of 
 
 ------------------------------------------------------------------------
 
-**Visualization 4.** Interactive Scatterplot of Average Survival Time (Years) by Median Income
+**Visualization 4.** Interactive Line Plot of Average Survival Time by Age of Diagnosis and Race
+
+```{r, echo=FALSE}
+# Interactive Line Plot of Average Survival Time by Age of Diagnosis and Race
+avg_surv_age_race <- leuk |> 
+  group_by(age, race) |> 
+  summarize(avg_surv = mean(surv, na.rm = TRUE), .groups = 'drop')
+
+four <- ggplot(avg_surv_age_race, aes(x = age, y = avg_surv, color = race, group = race, 
+                                      text = paste("Race: ", race, "<br>Average Survival: ", round(avg_surv, 3), "years", "<br>Age of Diagnosis: ", age, "years"))) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  labs(title = "Average Survival Time by Age of Diagnosis and Race",
+       x = "Age of Diagnosis (Years)",
+       y = "Average Survival Time (Years)",
+       color = "Race") +
+  theme_minimal() +
+  scale_color_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5))
+
+# Convert the ggplot to an interactive plot using plotly
+plot4 <- ggplotly(four, tooltip = "text")
+
+# Display the interactive plot
+plot4
+```
+
+<br> The discrepancy in sample sizes among racial groups suggests that average survival times for the smaller race categories may be more susceptible to outliers, especially in the "Unknown" group, which exhibited an unusually high average survival time of around 15 years for patients approximately 2.5 years old.
+
+------------------------------------------------------------------------
+
+**Visualization 5.** Interactive Scatterplot of Average Survival Time (Years) by Median Income
 
 ```{r, echo=FALSE}
 # Median Income
@@ -221,9 +262,9 @@ sum_med_income <- leuk |>
   arrange(desc(med_income))  #sorting by the ordered factor
 
 # Create the ggplot scatter plot
-four <- sum_med_income |>
+five <- sum_med_income |>
   filter(!is.na(med_income)) |>
-  ggplot(mapping=aes(x=med_income, y=Mean)) +
+  ggplot(mapping=aes(x=med_income, y=Mean, text = paste("Median Income: ", med_income, "<br>Average Survival: ", round(Mean, 3), "years"))) +
   geom_point() +
   labs(title = "Scatter Plot of Median Income by Average Survival Time (Years)",
        x = "Median Income",
@@ -232,45 +273,10 @@ four <- sum_med_income |>
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
 
 # Convert the ggplot to an interactive plot using plotly
-plot4 <- ggplotly(four)
+plot5 <- ggplotly(five, tooltip = "text")
 
 # Show the interactive plot
-plot4
-```
-
-There appears to be a positive association between median income and average survival time, indicating that higher income is correlated with better survival outcomes.
-
-------------------------------------------------------------------------
-
-**Visualization 5.** Interactive Line Plot of Average Survival Time by Age of Diagnosis and Race
-
-```{r, echo=FALSE}
-# Interactive Line Plot of Average Survival Time by Age of Diagnosis and Race
-avg_surv_age_race <- leuk |> 
-  group_by(age, race) |> 
-  summarize(avg_surv = mean(surv, na.rm = TRUE), .groups = 'drop')
-
-five <- ggplot(avg_surv_age_race, aes(x = age, y = avg_surv, color = race, group = race)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
-  labs(title = "Average Survival Time by Age of Diagnosis and Race",
-       x = "Age of Diagnosis (Years)",
-       y = "Average Survival Time (Years)",
-       color = "Race") +
-  theme_minimal() +
-  scale_color_paletteer_d("lisa::BridgetRiley", labels = function(x) str_wrap(x, width = 5)) # wrapped labels
-
-# Convert the ggplot to an interactive plot using plotly
-plot5 <- ggplotly(five)
-
-# Display the interactive plot
 plot5
 ```
 
-The discrepancy in sample sizes suggests that average survival times for the smaller race categories may be more susceptible to outliers, especially in the "Unknown" group, which exhibited an unusually high average survival time of around 15 years for patients approximately 2.5 years old.
-
-------------------------------------------------------------------------
-
-## Full Report
-
-Download the PDF version of the full report [here](./docs/Final-Project-Report.pdf).
+<br> There appears to be a positive association between median income and average survival time, indicating that higher income is correlated with better survival outcomes.
